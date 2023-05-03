@@ -1,0 +1,75 @@
+﻿@using QASite.Data;
+@model Question
+
+<div class="row" style="margin-top:100px;">
+    <div class="col-md-10 offset-md-2 bg-light p-4 rounded shadow">
+        <h2>@Model.Title</h2>
+        <hr />
+        @Model.Text
+        <hr />
+        @*<span>Asked by @Model.User.Name</span>
+        on
+        <span>@Model.DatePosted.ToLongDateString()</span>*@
+        <br />
+        <span>Tags:</span>
+        @foreach (var tag in Model.QuestionsTags)
+        {
+            <span class="badge bg-primary">@tag.Tag.Name</span>
+        }
+        <br />
+        <span>Likes: </span> <span data-question-id="@Model.Id" id="likes-count">0</span>
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 offset-md-2 mt-4">
+        <h3>Answers:</h3>
+    </div>
+</div>
+@if(Model.Answers != null)
+{
+    @foreach(Answer a in Model.Answers)
+    {
+        <div class="row">
+            <div class="col-md-8 offset-md-2 card card-body bg-light">
+                <div>@a.Text</div>
+                <br />
+                @*<span>Answered by @a.Name</span>
+                <span>on</span>
+                <span>@a.DatePosted.ToLongDateString</span>*@
+                <hr />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2 card card-body bg-light">
+            <h3>No answers yet, be the first to submit one!</h3>
+        </div>
+    </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2 card card-body bg-light mt-4">
+            <h2>Submit an answer</h2>
+            <form method="post" action="/home/addanswer">
+                <input type="hidden" name="questionid" value="@Model.Id" />
+                <input type="hidden" name="useremail" value="@User.Identity.Name" />
+                <textarea class="form-control" placeholder="Type your answer here..." rows="10" name="text"></textarea>
+                <br />
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2 card card-body bg-light mt-4">
+            <h6>Log in <a href="/account/login">here</a> to submit an answer</h6>
+        </div>
+    </div>
+}

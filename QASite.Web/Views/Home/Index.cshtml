@@ -1,0 +1,39 @@
+﻿@using QASite.Data;
+@model List<Question>
+<div class="row">
+    <div class="col-md-8 offset-md-2" style="margin-top:100px">
+        @foreach(Question q in Model)
+        {
+            <div class="card card-body bg-light">
+                <h4>
+                    <a href="/home/viewquestion?id=@q.Id">
+                        @q.Title
+                    </a>
+                </h4>
+                <div>
+                    <span>Tags:</span>
+                    @foreach (var tag in q.QuestionsTags)
+                    {
+                        <span class="badge bg-primary">@tag.Tag.Name</span>
+                    }
+                    
+                    
+                </div>
+                <div style="margin-top: 10px;">
+                    @q.Text
+                </div>
+                <span>Likes: 1</span>
+                <br />
+                @if(q.Answers == null)
+                {
+                    <span>0 answer(s)</span>
+                }
+                else
+                {
+                    <span>@q.Answers.Count answer(s)</span>
+                }
+            </div>
+        }
+                
+    </div>
+</div>
